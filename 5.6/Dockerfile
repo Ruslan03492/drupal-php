@@ -103,9 +103,10 @@ RUN echo 'http://alpine.gliderlabs.com/alpine/v3.4/main' > /etc/apk/repositories
     chmod +x /usr/local/bin/drush && \
 
     # Install Drupal Console
-    php -r "readfile('https://drupalconsole.com/installer');" > drupal.phar
-    mv drupal.phar /usr/local/bin/drupal
-    chmod +x /usr/local/bin/drupal && \
+    curl -sSL https://drupalconsole.com/installer -o drupal.phar && \
+        chmod +x drupal.phar && \
+        mv drupal.phar /usr/local/bin/drupal && \
+        chmod +x /usr/local/bin/drupal && \
 
     # Cleanup
     apk del --purge \

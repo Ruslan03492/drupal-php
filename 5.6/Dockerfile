@@ -1,14 +1,12 @@
-FROM alpine:3.4
+FROM alpine:3.5
 MAINTAINER Wodby <admin@wodby.com>
 
 # Install packages
-RUN echo 'http://alpine.gliderlabs.com/alpine/v3.4/main' > /etc/apk/repositories && \
-    echo 'http://alpine.gliderlabs.com/alpine/v3.4/community' >> /etc/apk/repositories && \
-    echo 'http://alpine.gliderlabs.com/alpine/edge/testing' >> /etc/apk/repositories && \
-    echo 'http://alpine.gliderlabs.com/alpine/edge/community' >> /etc/apk/repositories && \
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
 
     apk add --update \
-        openssl \
+        bash \
+        libressl \
         ca-certificates \
         openssh-client \
         rsync \
@@ -23,6 +21,7 @@ RUN echo 'http://alpine.gliderlabs.com/alpine/v3.4/main' > /etc/apk/repositories
         imap \
         imagemagick \
         mariadb-client \
+        postgresql-client\
 
         # Temp packages
         build-base \
@@ -152,8 +151,8 @@ RUN mkdir -p /etc/drush/site-aliases
 COPY default.aliases.drushrc.php /etc/drush/site-aliases/
 
 # Create user www-data
-RUN addgroup -g 82 -S www-data && \
-	adduser -u 82 -D -S -G www-data www-data
+RUN addgroup -g 82 www-data && \
+	adduser -u 82 -s /bin/bash -D -G www-data www-data
 
 # Create work dir
 RUN mkdir -p /var/www/html && \
